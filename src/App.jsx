@@ -52,12 +52,12 @@ const App = () => {
     if (appState.isActive) {
       const deviceTimer = setInterval(() => {
         const mockDevices = [
-          { id: 1, type: 'phone', distance: Math.floor(Math.random() * 50), user: 'Sarah M.', hasApp: true },
-          { id: 2, type: 'smartwatch', distance: Math.floor(Math.random() * 30), user: 'Priya K.', hasApp: true },
-          { id: 3, type: 'phone', distance: Math.floor(Math.random() * 100), user: 'Anita R.', hasApp: false },
-          { id: 4, type: 'tablet', distance: Math.floor(Math.random() * 80), user: 'Meera S.', hasApp: true }
+          { id: 1, type: 'phone', distance: Math.floor(Math.random() * 100) + 100, user: 'Sarah M.', hasApp: true },
+          { id: 2, type: 'smartwatch', distance: Math.floor(Math.random() * 100) + 100, user: 'Priya K.', hasApp: true },
+          { id: 3, type: 'phone', distance: Math.floor(Math.random() * 100) + 100, user: 'Anita R.', hasApp: false },
+          { id: 4, type: 'tablet', distance: Math.floor(Math.random() * 100) + 100, user: 'Meera S.', hasApp: true }
         ];
-        setNearbyDevices(mockDevices.filter(device => device.distance < 75));
+        setNearbyDevices(mockDevices.filter(device => device.distance < 200));
       }, 4000);
 
       return () => clearInterval(deviceTimer);
@@ -200,13 +200,12 @@ const App = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <label for="name" className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                 <input
                   type="text"
+                  name="name"
                   className="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                   placeholder="Enter your full name"
-                  value={userProfile.name}
-                  onChange={(e) => setUserProfile(prev => ({ ...prev, name: e.target.value }))}
                 />
               </div>
 
@@ -216,8 +215,7 @@ const App = () => {
                   type="tel"
                   className="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                   placeholder="+91 98765 43210"
-                  value={userProfile.phone}
-                  onChange={(e) => setUserProfile(prev => ({ ...prev, phone: e.target.value }))}
+
                 />
               </div>
             </div>
@@ -237,8 +235,7 @@ const App = () => {
                     type="text"
                     placeholder="Contact Name"
                     className="p-2 border border-blue-200 rounded-md text-sm"
-                    value={contact.name}
-                    onChange={(e) => updateEmergencyContact(index, 'name', e.target.value)}
+                    
                   />
                   <select
                     className="p-2 border border-blue-200 rounded-md text-sm"
@@ -255,8 +252,7 @@ const App = () => {
                   type="tel"
                   placeholder="Phone Number"
                   className="w-full p-2 border border-blue-200 rounded-md text-sm"
-                  value={contact.phone}
-                  onChange={(e) => updateEmergencyContact(index, 'phone', e.target.value)}
+                
                 />
               </div>
             ))}
@@ -343,7 +339,7 @@ const App = () => {
           <button
             className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-4 rounded-xl font-semibold text-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg"
             onClick={() => {
-              if (userProfile.name && userProfile.phone && userProfile.emergencyContacts[0].phone) {
+                if (true) {
                 setAppState(prev => ({ 
                   ...prev, 
                   isActive: true, 
