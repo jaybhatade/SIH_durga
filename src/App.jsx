@@ -21,7 +21,7 @@ const App = () => {
 
   const [countdown, setCountdown] = useState(0);
   const [location, setLocation] = useState({ lat: 19.0760, lng: 72.8777, address: 'Mumbai, Maharashtra' });
-  
+  const [nearbyDevices, setNearbyDevices] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [audioLevel, setAudioLevel] = useState(0);
   const [gesturePattern, setGesturePattern] = useState([]);
@@ -47,7 +47,22 @@ const App = () => {
     }
   }, [appState.locationTracking]);
 
- 
+  // Simulate nearby devices detection
+  useEffect(() => {
+    if (appState.isActive) {
+      const deviceTimer = setInterval(() => {
+        const mockDevices = [
+          { id: 1, type: 'phone', distance: Math.floor(Math.random() * 50), user: 'Sarah M.', hasApp: true },
+          { id: 2, type: 'smartwatch', distance: Math.floor(Math.random() * 30), user: 'Priya K.', hasApp: true },
+          { id: 3, type: 'phone', distance: Math.floor(Math.random() * 100), user: 'Anita R.', hasApp: false },
+          { id: 4, type: 'tablet', distance: Math.floor(Math.random() * 80), user: 'Meera S.', hasApp: true }
+        ];
+        setNearbyDevices(mockDevices.filter(device => device.distance < 75));
+      }, 4000);
+
+      return () => clearInterval(deviceTimer);
+    }
+  }, [appState.isActive]);
 
   // Simulate audio detection
   useEffect(() => {
@@ -171,7 +186,7 @@ const App = () => {
           <div className="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
             <Shield className="w-10 h-10 text-blue-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Women Safety Analytics</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">DURGA</h1>
           <p className="text-gray-600">Advanced Protection with AI Detection</p>
         </div>
 
@@ -185,9 +200,9 @@ const App = () => {
             
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2" for="is">Full Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                 <input
-                  type="text" id="is"
+                  type="text"
                   className="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                   placeholder="Enter your full name"
                   value={userProfile.name}
@@ -196,9 +211,9 @@ const App = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2" for="it">Phone Number *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
                 <input
-                  type="number" id="it"
+                  type="tel"
                   className="w-full p-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
                   placeholder="+91 98765 43210"
                   value={userProfile.phone}
@@ -511,7 +526,42 @@ const App = () => {
           </button>
         </div>
 
-      
+        {/* Nearby Devices */}
+        <div className="bg-white rounded-xl shadow-sm p-4">
+          <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
+            <Users className="w-5 h-5 mr-2 text-blue-600" />
+            Nearby Safety Network ({nearbyDevices.length})
+          </h3>
+          
+          {nearbyDevices.length > 0 ? (
+            <div className="space-y-3">
+              {nearbyDevices.map(device => (
+                <div key={device.id} className="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                  <div>
+                    <p className="font-medium text-gray-800">{device.user}</p>
+                    <p className="text-sm text-gray-600">
+                      {device.type.charAt(0).toUpperCase() + device.type.slice(1)} • {device.distance}m away
+                    </p>
+                  </div>
+                  <div className="flex items-center">
+                    {device.hasApp && (
+                      <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-full mr-2">
+                        SafetyApp
+                      </span>
+                    )}
+                    <div className={`w-3 h-3 rounded-full ${device.hasApp ? 'bg-green-400' : 'bg-gray-400'}`}></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-6 text-gray-500">
+              <Users className="w-12 h-12 mx-auto mb-2 text-gray-300" />
+              <p>No safety network devices nearby</p>
+              <p className="text-sm">Keep the app running to detect helpers</p>
+            </div>
+          )}
+        </div>
 
         {/* Location Status */}
         <div className="bg-white rounded-xl shadow-sm p-4">
@@ -532,7 +582,7 @@ const App = () => {
 
         {/* Footer */}
         <div className="text-center py-4 text-xs text-gray-500">
-          <p>🛡️ Women Safety Analytics v2.0</p>
+          <p>🛡️ DURGA v2.0</p>
           <p>Background protection active • Battery optimized</p>
         </div>
       </div>
